@@ -49,3 +49,10 @@ UserRoleID int Primary Key identity(1,1)NOT NULL ,
 RoleName Varchar(20) not null,
 UserID int references Users(UserID)
 );
+
+create table Tasks (
+TaskID int Primary Key identity(1,1)NOT NULL ,
+TaskName VARCHAR(50) NOT NULL,
+TaskDescription VARCHAR(300) NOT NULL,
+EmployeeID int references Employees(EmployeeID)
+);
