@@ -44,10 +44,23 @@ VALUES
 
 -- Create UserRoles table
 
-CREATE TABLE UserRoles (
-UserRoleID int Primary Key identity(1,1)NOT NULL ,
+CREATE TABLE Roles (
+RoleID int Primary Key identity(1,1)NOT NULL ,
 RoleName Varchar(20) not null,
 UserID int references Users(UserID)
+);
+
+INSERT INTO Roles (RoleName, UserID)
+VALUES
+('Admin', 1),
+('Employee', 2);
+
+
+
+Create table UserRoles(
+UserRoleID int Primary Key identity(1,1)NOT NULL ,
+UserID int references Users(UserID),
+RoleID int references Roles(RoleID)
 );
 
 create table Tasks (
