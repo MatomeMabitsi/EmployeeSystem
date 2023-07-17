@@ -1,14 +1,21 @@
+-- Use Master database
 Use Master
 GO
 
-If exists (Select * from sys.databases where name = 'EmployeeManagementSystem')
-Drop Database EmployeeManagementSystem
+-- Drop the database if it exists
+IF EXISTS (SELECT * FROM sys.databases WHERE name = 'EmployeeManagementSystem')
+BEGIN
+    ALTER DATABASE EmployeeManagementSystem SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+    DROP DATABASE EmployeeManagementSystem
+END
 GO
 
-Create Database EmployeeManagementSystem
+-- Create the database
+CREATE DATABASE EmployeeManagementSystem
 GO
 
-Use EmployeeManagementSystem
+-- Use the EmployeeManagementSystem database
+USE EmployeeManagementSystem
 GO
 
 -- Create the Employees table
@@ -29,33 +36,35 @@ VALUES
 ('Jane', 'Doe', 'jane.doe@example.com', '4567890123', 'Marketing', 'Marketing Manager'),
 ('Bill', 'Smith', 'bill.smith@example.com', '7890123456', 'IT', 'IT Manager');
 
--- Create the Users table
-CREATE TABLE Users (
-  UserID int Primary Key identity(1,1)NOT NULL ,
-  UserName VARCHAR(50) NOT NULL,
-  [Password] VARCHAR(50) NOT NULL
-);
 
--- Insert data into the Users table
-INSERT INTO Users (UserName, [Password])
-VALUES
-('MatomeMab', 'password'),
-('MatomeTom', 'password');
 
 -- Create UserRoles table
 
 CREATE TABLE Roles (
 RoleID int Primary Key identity(1,1)NOT NULL ,
-RoleName Varchar(20) not null,
-UserID int references Users(UserID)
+RoleName Varchar(20) not null
 );
 
-INSERT INTO Roles (RoleName, UserID)
+INSERT INTO Roles (RoleName)
 VALUES
-('Admin', 1),
-('Employee', 2);
+('Admin'),
+('Employee');
 
+-- Create the Users table
+CREATE TABLE Users (
+  UserID int Primary Key identity(1,1)NOT NULL ,
+  UserName VARCHAR(50) NOT NULL,
+  [Password] VARCHAR(50) NOT NULL,
+  RoleID int references Roles(RoleID)
+);
 
+-- Insert data into the Users table
+INSERT INTO Users (UserName, [Password],RoleID)
+VALUES
+('MatomeMab', 'password123',1),
+('MatomeTom', 'password',2),
+('Mahlatse', 'Bohlale',2),
+('Moya', 'Momo',1);
 
 Create table UserRoles(
 UserRoleID int Primary Key identity(1,1)NOT NULL ,
